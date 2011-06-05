@@ -11,7 +11,7 @@
 class YinYang_Filter_Url_Slug_UnitTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * This test instatiates a PriceSpin_Filter_Url_Slug instance
+     * This test instatiates a YinYang_Filter_Url_Slug instance
      * and runs the tests from the data provider below.
      *
      * @dataProvider provider
