@@ -3,24 +3,24 @@
  * Unit test for the YinYang_Filter_SentenceLength class.
  *
  * @category    YinYang
- * @package     YinYang_Filter_SentenceLength
+ * @package     YinYang_View_Helper_SentenceLength
  * @subpackage  UnitTest
- * @since       Sunday, 05 June 2011
+ * @since       Monday, 06 June 2011
  * @version     $Id$
  */
-class YinYang_Filter_SentenceLength_UnitTest extends PHPUnit_Framework_TestCase
+class YinYang_View_Helper_SentenceLength_Test extends PHPUnit_Framework_TestCase
 {
     /**
-     * This test instatiates a YinYang_Filter_Url_Slug instance
-     * and runs the tests from the data provider below.
+     * This is a test for the sentence length view helper that
+     * extends the sentence length filter unit test.
      *
      * @dataProvider provider
      */
-    public function testYinYangFilterSentenceLength($value, $result, $maxLength, $replace = false)
+    public function testYinYangViewHelperSentenceLength($value, $result, $maxLength)
     {
-        $obj = new YinYang_Filter_SentenceLength($maxLength, $replace);
+        $obj = new YinYang_View_Helper_SentenceLength();
 
-        $this->assertSame($result, $obj->filter($value));
+        $this->assertSame($result, $obj->sentenceLength($value, $maxLength));
     }
 
     /**
@@ -37,12 +37,6 @@ class YinYang_Filter_SentenceLength_UnitTest extends PHPUnit_Framework_TestCase
                 'One two three four', 20),
             array('One two, three three2, five',
                 'One two, three three2, five', 27),
-            // Extra spaces test
-            array('One  two,  three  three2,  five',
-                'One  two,  three  three2,  five', 40, false),
-            // Extra spaces test
-            array('One  two,  three  three2,  five',
-                'One two, three three2, five', 27, true),
             // Google meta title test
             array(
                 'Remarks on the Quantum-Gravity effects of "Bean ' .
