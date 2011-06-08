@@ -35,8 +35,10 @@ class YinYang_Validate_Url_Test extends PHPUnit_Framework_TestCase
         return array(
             array('http://www.google.com', true),
             array('https://www.google.com', true),
-            array('ftp://www.google.com', true),
+            array('ftp://uploads.google.com', true),
             array('shttp://www.google.com', false),
+            array('sftp://uploads.google.com', false),
+            array('http://hello.com', false),
         );
     }
 }

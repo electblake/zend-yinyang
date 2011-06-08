@@ -33,12 +33,20 @@ class YinYang_Validate_Url extends Zend_Validate_Abstract
     const INVALID = 'invalid';
 
     /**
+     * Invalid url error message handle.
+     *
+     * @var string
+     */
+    const INVALID_URL = 'invalidUrl';
+
+    /**
      * Array of error messages.
      *
      * @var string
      */
     protected $_messageTemplates = array(
-        self::INVALID => "'%value%' does not appear to be a valid url"
+        self::INVALID => "'%value%' does not appear to be a valid url",
+        self::INVALID_URL => "'%value%' is not a valid url"
     );
 
     /**
@@ -58,12 +66,18 @@ class YinYang_Validate_Url extends Zend_Validate_Abstract
         $uri            = explode(':', $this->value, 2);
         $scheme         = strtolower($uri[0]);
 
-        if (in_array($scheme, $this->_schemes)) {
+        if (!in_array($scheme, $this->_schemes)) {
 
-            return true;
+            $this->_error(self::INVALID);
+            return false;
         }
 
-        $this->_error(self::INVALID);
-        return false;
+        if (false === filter_var($this->value, FILTER_VALIDATE_URL)) {
+
+            $this->_error(self::INVALID_URL);
+            return false;
+        }
+
+        return true;
     }
 }
