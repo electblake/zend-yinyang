@@ -45,7 +45,7 @@ class YinYang_Validate_Url extends Zend_Validate_Abstract
      * @var string
      */
     protected $_messageTemplates = array(
-        self::INVALID => "'%value%' does not appear to be a valid url",
+        self::INVALID_SCHEME => "'%value%' does not have a valid scheme",
         self::INVALID_URL => "'%value%' is not a valid url"
     );
 
@@ -68,7 +68,7 @@ class YinYang_Validate_Url extends Zend_Validate_Abstract
 
         if (!in_array($scheme, $this->_schemes)) {
 
-            $this->_error(self::INVALID);
+            $this->_error(self::INVALID_SCHEME);
             return false;
         }
 
