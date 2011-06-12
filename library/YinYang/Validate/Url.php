@@ -30,7 +30,7 @@ class YinYang_Validate_Url extends Zend_Validate_Abstract
      *
      * @var string
      */
-    const INVALID = 'invalid';
+    const INVALID_SCHEME = 'invalidScheme';
 
     /**
      * Invalid url error message handle.
