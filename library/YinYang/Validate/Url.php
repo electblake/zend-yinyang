@@ -23,6 +23,11 @@
 */
 class YinYang_Validate_Url extends Zend_Validate_Abstract
 {
+    /**
+     * Schemes that are considered valid.
+     *
+     * @var string
+     */
     protected $_schemes = array('http', 'https', 'ftp');
 
     /**
