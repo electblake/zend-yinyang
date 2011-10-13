@@ -16,14 +16,17 @@ class YinYang_Validate_Url_Test extends PHPUnit_Framework_TestCase
      *
      * @dataProvider provider
      */
-    public function testYinYangValidateUrl($value, $success = true)
+    public function testYinYangValidateUrl($value, $success, $error = null)
     {
         $obj = new YinYang_Validate_Url();
+        $obj->setDisableTranslator(true);
 
         if (true === $success) {
             $this->assertTrue($obj->isValid($value));
         } else {
             $this->assertFalse($obj->isValid($value));
+            // On failure, as this is a validator, we also test our validation messages.
+            $this->assertEquals(reset(array_keys($obj->getMessages())), $error);
         }
     }
 
@@ -36,9 +39,10 @@ class YinYang_Validate_Url_Test extends PHPUnit_Framework_TestCase
             array('http://www.google.com', true),
             array('https://www.google.com', true),
             array('ftp://uploads.google.com', true),
-            array('shttp://www.google.com', false),
-            array('sftp://uploads.google.com', false),
-            array('http://hello.com', false),
+            array('shttp://www.google.com', false, YinYang_Validate_Url::INVALID_SCHEME),
+            array('sftp://uploads.google.com', false, YinYang_Validate_Url::INVALID_SCHEME),
+            array('http://uploads^&.google.com', false, YinYang_Validate_Url::INVALID_SYNTAX),
+            array('http://this-hostname-does-not-exist213595231.com', false, YinYang_Validate_Url::INVALID_HOSTNAME),
         );
     }
 }

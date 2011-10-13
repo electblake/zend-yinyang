@@ -42,7 +42,21 @@ class YinYang_Validate_Url extends Zend_Validate_Abstract
      *
      * @var string
      */
-    const INVALID_URL = 'invalidUrl';
+    const INVALID_SYNTAX = 'invalidSyntax';
+
+    /**
+     * Invalid url error message handle.
+     *
+     * @var string
+     */
+    const INVALID_HOSTNAME = 'invalidHostname';
+
+    /**
+     * A string that contains a validation IP address regular expression.
+     *
+     * @var string
+     */
+    const VALID_IP_REGEX = '/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/';
 
     /**
      * Array of error messages.
@@ -50,8 +64,9 @@ class YinYang_Validate_Url extends Zend_Validate_Abstract
      * @var string
      */
     protected $_messageTemplates = array(
-        self::INVALID_SCHEME => "'%value%' does not have a valid scheme",
-        self::INVALID_URL => "'%value%' is not a valid url"
+        self::INVALID_SCHEME    => "'%value%' does not have a valid scheme",
+        self::INVALID_SYNTAX    => "'%value%' does not appear to be a syntactically correct url format",
+        self::INVALID_HOSTNAME  => "'%value%' is not a valid url"
     );
 
     /**
@@ -71,15 +86,23 @@ class YinYang_Validate_Url extends Zend_Validate_Abstract
         $uri            = explode(':', $this->value, 2);
         $scheme         = strtolower($uri[0]);
 
+        if (false === filter_var($this->value, FILTER_VALIDATE_URL)) {
+
+            $this->_error(self::INVALID_SYNTAX);
+            return false;
+        }
+
         if (!in_array($scheme, $this->_schemes)) {
 
             $this->_error(self::INVALID_SCHEME);
             return false;
         }
 
-        if (false === filter_var($this->value, FILTER_VALIDATE_URL)) {
+        $hostname = parse_url($this->value, PHP_URL_HOST);
 
-            $this->_error(self::INVALID_URL);
+        if (!preg_match(self::VALID_IP_REGEX, gethostbyname($hostname))) {
+
+            $this->_error(self::INVALID_HOSTNAME);
             return false;
         }
 
