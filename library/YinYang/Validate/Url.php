@@ -86,10 +86,18 @@ class YinYang_Validate_Url extends Zend_Validate_Abstract
         $uri            = explode(':', $this->value, 2);
         $scheme         = strtolower($uri[0]);
 
-        if (false === filter_var($this->value, FILTER_VALIDATE_URL)) {
+        /**
+         * There is a bug in previoud versions of PHP
+         * which don't allow hyphenated domain names.
+         *
+         * @see https://bugs.php.net/bug.php?id=51192
+         */
+        if (version_compare(PHP_VERSION, '5.3.3') >= 0) {
+            if (false === filter_var($this->value, FILTER_VALIDATE_URL)) {
 
-            $this->_error(self::INVALID_SYNTAX);
-            return false;
+                $this->_error(self::INVALID_SYNTAX);
+                return false;
+            }
         }
 
         if (!in_array($scheme, $this->_schemes)) {
