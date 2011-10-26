@@ -37,9 +37,16 @@ class YinYang_Filter_SentenceLength implements Zend_Filter_Interface
     protected $_maxLength = 128;
 
     /**
+     * Whether to add Ellipsis to string if it is shortened.
+     *
+     * @var bool
+     */
+    protected $_addEllipsis = false;
+
+    /**
      * Whether multiple whitespaces should be removed, default to true.
      *
-     * @var int
+     * @var bool
      */
     protected $_replaceMultipleWhitespace = true;
 
@@ -47,14 +54,19 @@ class YinYang_Filter_SentenceLength implements Zend_Filter_Interface
      * Sets filter options
      *
      * @param int $maxLength  [optional] defaults to 128
+     * @param bool $addEllipsis [optional] whether ellipsis should be appended to the shortened string
      * @param bool $replaceWhitespace [optional] whether repeated whitespace
      *                                should be removed, default is true
      * @return void
      */
-    public function __construct($maxLength = null, $replaceWhitespace = null)
+    public function __construct($maxLength = null, $addEllipsis = false, $replaceWhitespace = null)
     {
         if (is_integer($maxLength) && $maxLength > 0) {
             $this->_maxLength = $maxLength;
+        }
+
+        if (true === $addEllipsis) {
+            $this->_addEllipsis = $addEllipsis;
         }
 
         if (is_bool($replaceWhitespace)) {
@@ -96,6 +108,11 @@ class YinYang_Filter_SentenceLength implements Zend_Filter_Interface
             }
 
             $value = substr($value, 0, $this->_maxLength);
+
+            if (true === $this->_addEllipsis) {
+
+                $value .= '…';
+            }
         }
 
         return $value;

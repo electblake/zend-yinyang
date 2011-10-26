@@ -30,9 +30,9 @@ class YinYang_View_Helper_SentenceLength extends Zend_View_Helper_Abstract
      * @param boolean|null $length
      * @param boolean|null $whitespace
      */
-    public function sentenceLength($string, $length = null, $whitespace = null)
+    public function sentenceLength($string, $length = null, $addEllipsis = false, $whitespace = null)
     {
-        $obj = new YinYang_Filter_SentenceLength($length, $whitespace);
+        $obj = new YinYang_Filter_SentenceLength($length, $addEllipsis, $whitespace);
 
         return $obj = $obj->filter($string);
     }
