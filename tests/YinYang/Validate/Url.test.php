@@ -8,7 +8,7 @@
  * @since       Monday, 06 June 2011
  * @version     $Id$
  */
-class YinYang_Validate_Url_Test extends PHPUnit_Framework_TestCase
+class YinYang_Validate_UrlTest extends PHPUnit_Framework_TestCase
 {
     /**
      * This test instatiates a YinYang_Validate_Url instance

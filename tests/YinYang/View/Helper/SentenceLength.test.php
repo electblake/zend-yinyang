@@ -8,7 +8,7 @@
  * @since       Monday, 06 June 2011
  * @version     $Id$
  */
-class YinYang_View_Helper_SentenceLength_Test extends PHPUnit_Framework_TestCase
+class YinYang_View_Helper_SentenceLengthTest extends PHPUnit_Framework_TestCase
 {
     /**
      * This is a test for the sentence length view helper that
@@ -16,11 +16,11 @@ class YinYang_View_Helper_SentenceLength_Test extends PHPUnit_Framework_TestCase
      *
      * @dataProvider provider
      */
-    public function testYinYangViewHelperSentenceLength($value, $result, $maxLength)
+    public function testYinYangViewHelperSentenceLength($value, $result, $addEllipsis = false, $maxLength)
     {
         $obj = new YinYang_View_Helper_SentenceLength();
 
-        $this->assertSame($result, $obj->sentenceLength($value, $maxLength));
+        $this->assertSame($result, $obj->sentenceLength($value, $addEllipsis, $maxLength));
     }
 
     /**
@@ -30,13 +30,13 @@ class YinYang_View_Helper_SentenceLength_Test extends PHPUnit_Framework_TestCase
     {
         return array(
             array('One Two Three Four Five Six Seven Eight',
-                'One Two Three Four Five Six Seven Eight', 128),
+                'One Two Three Four Five Six Seven Eight', 128, false),
             array('One, two three, four five',
-                'One, two three, four', 20),
+                'One, two three, four', 20, false),
             array('One two three four five',
-                'One two three four', 20),
+                'One two three four', 20, false),
             array('One two, three three2, five',
-                'One two, three three2, five', 27),
+                'One two, three three2, five', 27, false),
             // Google meta title test
             array(
                 'Remarks on the Quantum-Gravity effects of "Bean ' .
@@ -45,7 +45,17 @@ class YinYang_View_Helper_SentenceLength_Test extends PHPUnit_Framework_TestCase
                 'the Second half of the Twentieth Century, and Related Papers: ' .
                 'a Summary',
                 'Remarks on the Quantum-Gravity effects of "Bean Pole" diversification',
-                70
+                70, false
+            ),
+            // Google meta title test
+            array(
+                'Remarks on the Quantum-Gravity effects of "Bean ' .
+                'Pole" diversification in Mononucleosis patients in Developing ' .
+                'Countries under Economic Conditions Prevalent during ' .
+                'the Second half of the Twentieth Century, and Related Papers: ' .
+                'a Summary',
+                'Remarks on the Quantum-Gravity effects of "Bean Pole" diversification…',
+                70, true, false
             ),
         );
     }
