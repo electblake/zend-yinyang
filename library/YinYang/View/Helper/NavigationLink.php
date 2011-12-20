@@ -42,8 +42,10 @@ class YinYang_View_Helper_NavigationLink extends Zend_View_Helper_Abstract
         $page = $container->findOneBy('id', $pageId);
 
         if ($page instanceof Zend_Navigation_Page) {
+            $page = clone $page;
             $page->setLabel(!empty($label) ? $label : $page->getLabel());
             $html = $this->getView()->navigation()->menu()->htmlify($page);
+            unset($page);
         } else {
             $html = $this->getView()->escape((string)$label);
         }
