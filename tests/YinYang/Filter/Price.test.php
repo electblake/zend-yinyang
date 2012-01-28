@@ -21,7 +21,7 @@ class YinYang_Filter_PriceTest extends PHPUnit_Framework_TestCase
         $filter = new YinYang_Filter_Price();
         $this->assertInstanceOf('YinYang_Filter_Price', $filter);
 
-        $this->assertEquals($expected, $filter->filter($value));
+        $this->assertSame($expected, $filter->filter($value));
     }
 
     /**
@@ -32,7 +32,8 @@ class YinYang_Filter_PriceTest extends PHPUnit_Framework_TestCase
         return array(
             array('£3.99', '3.99'),
             array('$2.99 USD', '2.99'),
-            array('€4,999,999.00', '4999999.00'),
+            array('€4,999,999.01', '4999999.01'),
+            array('€4999999,01', '4999999.01'),
         );
     }
 }
