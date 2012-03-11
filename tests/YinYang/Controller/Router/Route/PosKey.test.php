@@ -17,8 +17,16 @@ class YinYang_Controller_Router_Route_PosKeyTest extends PHPUnit_Framework_TestC
      */
     public function testMatch(array $info, $matchPath, $returnVars)
     {
-        $route = new YinYang_Controller_Router_Route_PosKey();
+        $config = new Zend_Config($info);
+
+        $route = YinYang_Controller_Router_Route_PosKey::getInstance($config);
         $this->assertInstanceOf('YinYang_Controller_Router_Route_PosKey', $route);
+
+        $this->assertEquals($returnVars, $route->match($matchPath));
+        $this->assertEquals(trim($matchPath, '/'), $route->assemble($returnVars, false, false));
+
+        // Version
+        $this->assertEquals('1', $route->getVersion());
     }
 
     /**
@@ -41,17 +49,17 @@ class YinYang_Controller_Router_Route_PosKeyTest extends PHPUnit_Framework_TestC
                         2 => 'page',
                     ),
                     'reqs' => array(
-                        'pos1'         => '[A-Za-z0-9]',
-                        'pos2'         => '[A-Za-z0-9]',
-                        'namedOneName' => '[A-Za-z]',
-                        'NamedTwoName' => '[A-Za-z]',
-                        'page'         => '[0-9]',
+                        'pos1'         => '[A-Za-z0-9-]+',
+                        'pos2'         => '[A-Za-z0-9]+',
+                        'namedOneName' => '[A-Za-z]+',
+                        'NamedTwoName' => '[A-Za-z]+',
+                        'page'         => '\d+',
                     ),
                 ),
-                '/stem-name/pos1value/pos2value/namedOneName/NamedOneValue/NamedTwoName/NamedTwoValue/page/12'.
+                '/stem-name/pos1-value/pos2value/namedOneName/NamedOneValue/NamedTwoName/NamedTwoValue/page/12',
                 array(
-                    'pos1'         => 'pos1value',
-                    'pos2'         => 'pos1value',
+                    'pos1'         => 'pos1-value',
+                    'pos2'         => 'pos2value',
                     'namedOneName' => 'NamedOneValue',
                     'NamedTwoName' => 'NamedTwoValue',
                     'page'         => '12',

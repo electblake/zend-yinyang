@@ -76,7 +76,7 @@ class YinYang_Controller_Router_Route_PosKey extends Zend_Controller_Router_Rout
      *
      * @var string
      */
-    protected $_regDel = '#';
+    protected $_regDel = '/';
 
     /**
      * Constructor that creates
@@ -106,7 +106,7 @@ class YinYang_Controller_Router_Route_PosKey extends Zend_Controller_Router_Rout
     {
         $stem       = $config->route;
         $positional = ($config->positional instanceof Zend_Config) ? $config->positional->toArray() : array();
-        $named      = ($config->args instanceof Zend_Config) ? $config->named->toArray() : array();
+        $named      = ($config->named instanceof Zend_Config) ? $config->named->toArray() : array();
         $defaults   = ($config->defaults instanceof Zend_Config) ? $config->defaults->toArray() : array();
         $reqs       = ($config->reqs instanceof Zend_Config) ? $config->reqs->toArray() : array();
 
@@ -161,7 +161,7 @@ class YinYang_Controller_Router_Route_PosKey extends Zend_Controller_Router_Rout
                         }
                     }
                     $params[$parts[$i]] = $parts[$i+1];
-                    unset($parts[$i],$parts[$i+1]);
+                    unset($parts[$i], $parts[$i+1]);
                 } else {
                     unset($parts[$i]);
                 }
@@ -186,6 +186,8 @@ class YinYang_Controller_Router_Route_PosKey extends Zend_Controller_Router_Rout
             }
         }
         $this->_data = $return + $params;
+
+        //die(print_r($this->_data));
         return $this->_data;
     }
 
@@ -199,14 +201,14 @@ class YinYang_Controller_Router_Route_PosKey extends Zend_Controller_Router_Rout
      * @throws Zend_Controller_Router_Exception
      * @return string Resulting absolute URL path
      */
-    public function assemble(array $data = null, $reset = false, $encode = false)
+    public function assemble($data = array(), $reset = false, $encode = false)
     {
         if (!$reset && is_array($this->_data)) {
             $data = array_merge($this->_data, $data);
         }
 
         $url = array();
-        $url[] = $this->_stem;
+        $url[] = trim($this->_stem, $this->_urlDelimiter);
 
         foreach ($this->_positional AS $key => $name) {
             if (array_key_exists($name, $data)) {
@@ -230,6 +232,8 @@ class YinYang_Controller_Router_Route_PosKey extends Zend_Controller_Router_Rout
                 }
             }
         }
+
+        //die(print_r($url));
 
         $assembledRoute = '';
         $assembledRoute = implode($this->_urlDelimiter, $url);
