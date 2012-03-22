@@ -221,7 +221,7 @@ class YinYang_Controller_Router_Route_PosKey extends Zend_Controller_Router_Rout
         }
 
         foreach ($this->_named AS $key) {
-            if (array_key_exists($key, $data)) {
+            if (array_key_exists($key, $data) && ('' != $data[$key])) {
 
                 $url[] = $key;
 
