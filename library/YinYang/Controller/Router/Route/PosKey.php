@@ -211,7 +211,7 @@ class YinYang_Controller_Router_Route_PosKey extends Zend_Controller_Router_Rout
         $url[] = trim($this->_stem, $this->_urlDelimiter);
 
         foreach ($this->_positional AS $key => $name) {
-            if (array_key_exists($name, $data)) {
+            if (array_key_exists($name, $data) && ('' != $data[$name])) {
                 if ($encode) {
                     $url[] = urlencode($data[$name]);
                 } else {
